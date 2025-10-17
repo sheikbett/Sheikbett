@@ -1,86 +1,585 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CA$H BETS</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: #0b0b0b;
-      font-family: "Poppins", sans-serif;
-      color: #fff;
-      text-align: center;
-    }
-    header {
-      background: linear-gradient(90deg, gold, #ff0000);
-      color: #000;
-      padding: 20px;
-      font-size: 2em;
-      font-weight: 700;
-      letter-spacing: 3px;
-      box-shadow: 0 2px 20px #ff0000;
-    }
-    section {
-      padding: 30px 10px;
-    }
-    h2 {
-      color: gold;
-      margin-bottom: 15px;
-      font-size: 1.8em;
-      text-shadow: 0 0 10px #ff0000;
-    }
-    iframe {
-      width: 95%;
-      max-width: 800px;
-      height: 450px;
-      border: 3px solid gold;
-      border-radius: 15px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-      margin-bottom: 40px;
-    }
-    footer {
-      background: #111;
-      color: #888;
-      font-size: 0.9em;
-      padding: 20px 0;
-      border-top: 2px solid #ff0000;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CA$H BETS</title>
+<style>
+  :root{
+    --bg:#070708;
+    --card:#0f1112;
+    --accent:#c81f1f;
+    --gold:#d4a800;
+    --muted:#9aa0a6;
+    --glass: rgba(255,255,255,0.02);
+    --glass-2: rgba(255,255,255,0.03);
+    --success:#2ecc71;
+    --danger:#e74c3c;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(800px 400px at 10% 10%, rgba(212,154,0,0.02), transparent), linear-gradient(180deg,#050506,#0a0a0b);
+    color:#efefef;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding-top:72px;
+  }
+
+  /* Header */
+  header{
+    position:fixed; top:0; left:0; right:0;
+    height:72px; display:flex; align-items:center; justify-content:space-between;
+    padding:12px 20px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2));
+    border-bottom:1px solid rgba(255,255,255,0.03);
+    z-index:999;
+    backdrop-filter: blur(6px);
+  }
+  .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:2px; font-size:20px; color:var(--gold); text-transform:uppercase;}
+  .logo{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#0b0b0b;background:linear-gradient(90deg,#ffd35a,#d4a800);box-shadow:0 6px 20px rgba(212,154,0,0.22)}
+  nav{display:flex;gap:8px;align-items:center}
+  .nav-btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;color:var(--muted);cursor:pointer}
+  .cta{background:linear-gradient(90deg,var(--gold),#ffd700);color:#0b0b0b;border-radius:8px;padding:8px 12px;font-weight:800;cursor:pointer;box-shadow:0 10px 30px rgba(212,154,0,0.12)}
+
+  /* Container */
+  .wrap{max-width:1100px;margin:24px auto;padding:20px;display:grid;grid-template-columns:1fr;gap:18px}
+
+  .hero{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+    border-radius:14px;padding:22px;display:flex;gap:20px;align-items:center;box-shadow:0 14px 40px rgba(0,0,0,0.6);
+  }
+  .hero h1{margin:0;font-size:28px;color:var(--gold);letter-spacing:2px}
+  .small-muted{color:var(--muted);font-size:13px}
+
+  .games{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:900px){.games{grid-template-columns:1fr}}
+
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.04));border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.02);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+  .card h3{margin:0 0 8px;color:var(--gold);font-size:18px}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+  .controls{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:12px;flex-wrap:wrap}
+  input[type="number"]{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:inherit;width:120px}
+
+  /* Slot */
+  .slot-grid{display:flex;gap:10px;align-items:center;justify-content:center}
+  .slot-reel{width:90px;height:90px;border-radius:10px;background:linear-gradient(180deg,#131417,#0b0b0d);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#ffd89b;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 16px rgba(0,0,0,0.6)}
+
+  /* Aviator */
+  .aviator-stage{height:140px;position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.03));border-radius:10px;overflow:hidden;display:flex;align-items:flex-end}
+  .plane{position:absolute;left:60px;bottom:18px;transform-origin:center;transition: transform 0.12s linear;font-size:36px}
+  .multiplier{position:absolute;right:14px;top:14px;font-weight:900;font-size:28px;color:var(--gold);text-shadow:0 4px 24px rgba(0,0,0,0.6)}
+
+  /* Mines */
+  .mines-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .mine-cell{background:var(--glass-2);border-radius:8px;height:62px;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
+
+  /* Double */
+  .double-board{display:flex;gap:12px;justify-content:center;margin-top:10px}
+  .double-option{padding:18px 24px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.03));cursor:pointer;border:1px solid rgba(255,255,255,0.02);font-weight:900}
+
+  /* Crash */
+  .crash-stage{height:120px;border-radius:10px;display:flex;align-items:center;padding:10px;position:relative;overflow:hidden;background:linear-gradient(180deg,#0e0e10,#060607)}
+  .crash-bar{position:absolute;left:0;bottom:0;width:4px;height:0;background:linear-gradient(180deg,var(--gold),#ffd700);box-shadow:0 0 6px rgba(212,154,0,0.7)}
+
+  .result{margin-top:12px;font-size:15px;font-weight:800}
+  .result.win{color:var(--success)}
+  .result.lose{color:var(--danger)}
+
+  footer{max-width:1100px;margin:20px auto 80px;padding:10px;color:var(--muted);font-size:13px;text-align:center}
+</style>
 </head>
 <body>
-  <header>CA$H BETS</header>
 
-  <section>
-    <h2>🎰 Fortune Tiger</h2>
-    <iframe src="https://spribe.co/games/fortune-tiger/demo" allowfullscreen></iframe>
+<header>
+  <div class="brand"><div class="logo">CB</div>CA$H BETS</div>
+  <nav>
+    <button class="nav-btn" onclick="scrollToGame('fortune')">Fortune</button>
+    <button class="nav-btn" onclick="scrollToGame('aviator')">Aviator</button>
+    <button class="nav-btn" onclick="scrollToGame('mines')">Mines</button>
+    <button class="nav-btn" onclick="scrollToGame('double')">Double</button>
+    <button class="nav-btn" onclick="scrollToGame('crash')">Crash</button>
+    <button class="cta" onclick="resetBalance()">Reset</button>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero card">
+    <div style="flex:1">
+      <h1>CA$H BETS</h1>
+      <p class="small-muted">Simulações interativas — entretenimento apenas. Sem apostas reais.</p>
+      <div style="margin-top:10px">Saldo: <strong id="balanceDisplay" style="color:var(--gold)">1000</strong></div>
+      <small class="small-muted">Dica: valores são fictícios. Jogue com responsabilidade (simulação).</small>
+    </div>
+    <div style="width:200px;text-align:right">
+      <img src="https://i.imgur.com/6Iej2c3.png" alt="logo" style="max-width:100%;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6)">
+    </div>
   </section>
 
-  <section>
-    <h2>🛩️ Aviator</h2>
-    <iframe src="https://spribe.co/games/aviator/demo" allowfullscreen></iframe>
-  </section>
+  <div class="games">
 
-  <section>
-    <h2>💣 Mines</h2>
-    <iframe src="https://bcgame.games/mines/demo" allowfullscreen></iframe>
-  </section>
+    <!-- FORTUNE -->
+    <section id="fortune" class="card">
+      <h3>🎰 Fortune Tiger</h3>
+      <div class="meta">Slot 3 rolos — combine símbolos.</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+        <div style="flex:1">
+          <div class="slot-grid" id="slotGrid">
+            <div class="slot-reel" id="r0">🍒</div>
+            <div class="slot-reel" id="r1">🍋</div>
+            <div class="slot-reel" id="r2">🔔</div>
+          </div>
+          <div class="controls">
+            <input id="slotBet" type="number" min="1" value="10">
+            <button onclick="spinSlot()" style="background:linear-gradient(90deg,var(--gold),#ffd700);color:#0b0b0b;padding:10px 14px;border-radius:8px;border:none;font-weight:800">Girar</button>
+          </div>
+          <div id="slotResult" class="result"></div>
+        </div>
+        <div style="width:220px;text-align:center">
+          <strong>Prêmios</strong>
+          <ul style="list-style:none;padding:0;margin:8px 0;color:var(--muted)">
+            <li>3x 🍒 = 2×</li>
+            <li>3x 🍋 = 3×</li>
+            <li>3x 🔔 = 5×</li>
+            <li>3x ⭐ = 10×</li>
+            <li>Qualquer par = 1.2×</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-  <section>
-    <h2>🎡 Double</h2>
-    <iframe src="https://blaze.com/pt/games/double" allowfullscreen></iframe>
-  </section>
+    <!-- AVIATOR -->
+    <section id="aviator" class="card">
+      <h3>🛩️ Aviator</h3>
+      <div class="meta">Avança multiplicador — cash out antes do crash.</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="flex:1">
+          <div class="aviator-stage" id="aviStage">
+            <div class="plane" id="plane">✈️</div>
+            <div class="multiplier" id="aviMul">1.00×</div>
+          </div>
+          <div class="controls" style="justify-content:center">
+            <input id="aviBet" type="number" min="1" value="20">
+            <button class="nav-btn" id="aviStart" onclick="startAviator()">Start</button>
+            <button class="nav-btn" id="aviCash" onclick="cashoutAviator()" disabled>Cashout</button>
+          </div>
+          <div id="aviResult" class="result"></div>
+        </div>
+        <div style="width:240px;text-align:center">
+          <strong>Regras</strong>
+          <p class="small-muted">Clique em Cashout para garantir o multiplicador atual antes do crash.</p>
+        </div>
+      </div>
+    </section>
 
-  <section>
-    <h2>💎 Crash</h2>
-    <iframe src="https://stake.com/casino/games/crash" allowfullscreen></iframe>
-  </section>
+    <!-- MINES -->
+    <section id="mines" class="card">
+      <h3>💣 Mines</h3>
+      <div class="meta">Revele células seguras — evite as minas.</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;justify-content:center">
+            Bet: <input id="minesBet" type="number" min="1" value="10" style="width:110px;margin-left:8px">
+            Minas:
+            <select id="mineCount" style="margin-left:8px;padding:8px;border-radius:8px;background:transparent;color:inherit">
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5</option>
+              <option value="6">6</option>
+            </select>
+            <button class="nav-btn" onclick="startMines()">Iniciar</button>
+          </div>
+          <div class="mines-grid" id="minesGrid" style="max-width:420px;margin:0 auto"></div>
+          <div id="minesResult" class="result"></div>
+        </div>
+        <div style="width:240px;text-align:center">
+          <strong>Nota</strong>
+          <p class="small-muted">Clique duas vezes em uma célula descoberta para fazer cashout do prêmio atual.</p>
+        </div>
+      </div>
+    </section>
 
-  <footer>© 2025 CA$H BETS • A liderança oculta do digital</footer>
+    <!-- DOUBLE -->
+    <section id="double" class="card">
+      <h3>🎡 Double</h3>
+      <div class="meta">Escolha Red ou Black — payout 2×</div>
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <div class="double-board">
+            <div class="double-option" onclick="playDouble('red')">🔴 Red</div>
+            <div class="double-option" onclick="playDouble('black')">⚫ Black</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:center">
+            <input id="doubleBet" type="number" min="1" value="25" style="width:120px">
+            <button style="background:linear-gradient(90deg,var(--gold),#ffd700);color:#0b0b0b;padding:10px 14px;border-radius:8px;border:none;font-weight:800" onclick="playDoubleFromInput()">Bet</button>
+          </div>
+          <div id="doubleResult" class="result"></div>
+        </div>
+        <div style="width:220px;text-align:center">
+          <strong>Odds</strong>
+          <p class="small-muted">Resultado aleatório justo ~50/50</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRASH -->
+    <section id="crash" class="card">
+      <h3>💎 Crash</h3>
+      <div class="meta">Multiplicador crescente — saque antes do crash.</div>
+      <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1">
+          <div class="crash-stage" id="crashStage">
+            <div class="crash-bar" id="crashBar"></div>
+            <div style="position:absolute;right:14px;top:10px;font-weight:900;font-size:22px;color:var(--gold)" id="crashMul">1.00×</div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:center">
+            <input id="crashBet" type="number" min="1" value="10" style="width:120px">
+            <button class="nav-btn" id="crashStart" onclick="startCrash()">Start</button>
+            <button class="nav-btn" id="crashCash" onclick="cashCrash()" disabled>Cashout</button>
+          </div>
+          <div id="crashResult" class="result"></div>
+        </div>
+        <div style="width:220px;text-align:center">
+          <strong>Regras</strong>
+          <p class="small-muted">Se o multiplicador atingir o ponto secreto (crash) antes do cashout, você perde a aposta.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<footer>© 2025 CA$H BETS — Simulações interativas apenas. Não use para apostas reais.</footer>
+
+<script>
+/* --------------------------
+   Shared state & helpers
+   -------------------------- */
+let balance = 1000;
+const balanceDisplay = document.getElementById('balanceDisplay');
+function updateBalanceDisplay(){ balanceDisplay.textContent = Number(balance).toFixed(2) }
+updateBalanceDisplay();
+
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+function format(x){ return Number(x).toFixed(2) }
+
+/* Audio helper (small beeps) */
+const audioCtx = (typeof AudioContext !== 'undefined') ? new AudioContext() : null;
+function beep(freq=440, duration=0.06){
+  try{
+    if(!audioCtx) return;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine'; o.frequency.value = freq;
+    g.gain.value = 0.02;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+    o.stop(audioCtx.currentTime + duration);
+  }catch(e){}
+}
+
+/* Scroll helper */
+function scrollToGame(id){
+  const e = document.getElementById(id);
+  if(!e) return;
+  window.scrollTo({top: e.getBoundingClientRect().top + window.scrollY - 72, behavior:'smooth'});
+}
+
+/* Reset balance */
+function resetBalance(){ balance = 1000; updateBalanceDisplay(); }
+
+/* --------------------------
+   FORTUNE - simple slot
+   -------------------------- */
+const symbols = ['🍒','🍋','🔔','⭐','7️⃣'];
+const slotEls = [document.getElementById('r0'), document.getElementById('r1'), document.getElementById('r2')];
+let spinning = false;
+
+function spinSlot(){
+  if(spinning) return;
+  const bet = Number(document.getElementById('slotBet').value) || 1;
+  if(bet<=0) return alert('Aposta inválida');
+  if(bet>balance) return alert('Saldo insuficiente');
+  balance -= bet; updateBalanceDisplay();
+  beep(600,0.05);
+  spinning = true;
+  const duration = 1100;
+  const start = Date.now();
+  const final = [symbols[randInt(0,symbols.length-1)],symbols[randInt(0,symbols.length-1)],symbols[randInt(0,symbols.length-1)]];
+  const resultEl = document.getElementById('slotResult');
+  const roll = setInterval(()=>{
+    const t = Date.now()-start;
+    slotEls.forEach((el,i)=>{
+      el.textContent = symbols[randInt(0,symbols.length-1)];
+      el.style.transform = `translateY(${Math.sin((t/120)+(i*2))*6}px)`;
+    });
+    if(t>duration){
+      clearInterval(roll);
+      slotEls.forEach((el,i)=> el.textContent = final[i]);
+      // evaluate
+      let payout = 0;
+      if(final[0]===final[1] && final[1]===final[2]){
+        const s = final[0];
+        if(s==='🍒') payout = 2;
+        if(s==='🍋') payout = 3;
+        if(s==='🔔') payout = 5;
+        if(s==='⭐') payout = 10;
+        if(s==='7️⃣') payout = 20;
+      } else if(final[0]===final[1] || final[1]===final[2] || final[0]===final[2]){
+        payout = 1.2;
+      } else { payout = 0; }
+      if(payout>0){
+        const won = bet * payout;
+        balance += won;
+        updateBalanceDisplay();
+        showResult(resultEl, `Você venceu ${format(won)} (x${payout})`, 'win');
+        beep(950,0.12);
+      } else {
+        showResult(resultEl, `Perdeu ${format(bet)}`, 'lose');
+        beep(220,0.06);
+      }
+      spinning = false;
+    }
+  },80);
+}
+
+/* --------------------------
+   AVIATOR
+   -------------------------- */
+let aviInterval = null;
+let aviState = { running:false, mul:1, crashAt:0, bet:0 };
+
+function startAviator(){
+  if(aviState.running) return;
+  const bet = Number(document.getElementById('aviBet').value) || 1;
+  if(bet>balance){ alert('Saldo insuficiente'); return; }
+  balance -= bet; updateBalanceDisplay();
+  aviState.running = true; aviState.mul = 1.00; aviState.bet = bet;
+  // determine crash point (random bias)
+  aviState.crashAt = Number((1.2 + Math.pow(Math.random(),1.6)*18).toFixed(2));
+  document.getElementById('aviStart').disabled = true;
+  document.getElementById('aviCash').disabled = false;
+  showResult(document.getElementById('aviResult'), 'Rodando...', null);
+  const plane = document.getElementById('plane');
+  const mulEl = document.getElementById('aviMul');
+  let t=0;
+  aviInterval = setInterval(()=>{
+    t += 0.08;
+    aviState.mul = Number((1 + t*(0.35 + Math.sqrt(t)*0.02)).toFixed(2));
+    mulEl.textContent = aviState.mul.toFixed(2) + '×';
+    plane.style.transform = `translateY(${ - Math.min(80, aviState.mul*6)}px) rotate(${Math.min(20,aviState.mul*2)}deg)`;
+    beep(300 + Math.min(700, aviState.mul*50), 0.02);
+    if(aviState.mul >= aviState.crashAt){
+      clearInterval(aviInterval); aviInterval = null;
+      aviState.running = false;
+      document.getElementById('aviCash').disabled = true;
+      document.getElementById('aviStart').disabled = false;
+      showResult(document.getElementById('aviResult'), `Crashed em ${aviState.crashAt.toFixed(2)}× — Perdeu ${format(aviState.bet)}`, 'lose');
+      beep(180,0.18);
+    }
+  },80);
+}
+
+function cashoutAviator(){
+  if(!aviState.running) return;
+  const mul = aviState.mul;
+  const won = aviState.bet * mul;
+  balance += won; updateBalanceDisplay();
+  clearInterval(aviInterval); aviInterval = null;
+  aviState.running = false;
+  document.getElementById('aviCash').disabled = true;
+  document.getElementById('aviStart').disabled = false;
+  showResult(document.getElementById('aviResult'), `Cashout: ${format(won)} (x${mul.toFixed(2)})`, 'win');
+  beep(950,0.12);
+}
+
+/* --------------------------
+   MINES
+   -------------------------- */
+let minesState = { active:false, mines:[], revealed:[], cells:25 };
+function startMines(){
+  const bet = Number(document.getElementById('minesBet').value) || 1;
+  const mines = Number(document.getElementById('mineCount').value) || 5;
+  if(bet>balance){ alert('Saldo insuficiente'); return; }
+  balance -= bet; updateBalanceDisplay();
+  minesState.active = true; minesState.bet = bet; minesState.mines=[]; minesState.revealed=[]; minesState.cells=25;
+  while(minesState.mines.length < mines){
+    const r = randInt(0, minesState.cells-1);
+    if(!minesState.mines.includes(r)) minesState.mines.push(r);
+  }
+  const grid = document.getElementById('minesGrid');
+  grid.innerHTML = '';
+  for(let i=0;i<minesState.cells;i++){
+    const cell = document.createElement('div');
+    cell.className = 'mine-cell';
+    cell.dataset.i = i;
+    cell.textContent = '';
+    cell.onclick = () => revealMine(i, cell);
+    grid.appendChild(cell);
+  }
+  showResult(document.getElementById('minesResult'), 'Jogo iniciado — clique nas células.', null);
+}
+
+function revealMine(i, el){
+  if(!minesState.active) return;
+  if(minesState.revealed.includes(i)) return;
+  if(el.classList.contains('disabled')) return;
+  if(minesState.mines.includes(i)){
+    el.textContent = '💣';
+    el.style.background = 'linear-gradient(90deg, rgba(231,76,60,0.12), rgba(0,0,0,0.05))';
+    revealAllMines();
+    showResult(document.getElementById('minesResult'), `Explodiu! Perdeu ${format(minesState.bet)}`, 'lose');
+    minesState.active = false; beep(200,0.18);
+  } else {
+    el.textContent = '💎';
+    el.classList.add('disabled');
+    minesState.revealed.push(i);
+    const safe = minesState.revealed.length;
+    const potential = minesState.bet * (1 + safe * 0.5);
+    showResult(document.getElementById('minesResult'), `Segurou ${safe} safe — prêmio potencial ${format(potential)}`, 'win');
+    beep(700,0.06);
+    el.ondblclick = () => {
+      if(!minesState.active) return;
+      const won = minesState.bet * (1 + minesState.revealed.length * 0.5);
+      balance += won; updateBalanceDisplay();
+      minesState.active = false;
+      showResult(document.getElementById('minesResult'), `Cashout: ${format(won)}`, 'win');
+      beep(950,0.08);
+      disableMinesGrid();
+    };
+  }
+}
+
+function revealAllMines(){
+  const grid = document.getElementById('minesGrid');
+  const cells = grid.children;
+  for(let i=0;i<cells.length;i++){
+    if(minesState.mines.includes(i)) cells[i].textContent = '💣';
+    cells[i].classList.add('disabled');
+  }
+}
+function disableMinesGrid(){
+  const grid = document.getElementById('minesGrid');
+  const cells = grid.children;
+  for(let i=0;i<cells.length;i++) cells[i].classList.add('disabled');
+}
+
+/* --------------------------
+   DOUBLE
+   -------------------------- */
+function playDoubleFromInput(){
+  const bet = Number(document.getElementById('doubleBet').value) || 1;
+  if(bet>balance){ alert('Saldo insuficiente'); return; }
+  // choose random auto color
+  const choice = Math.random() > 0.5 ? 'red' : 'black';
+  playDouble(choice, bet);
+}
+
+function playDouble(choice, betArg){
+  const bet = (typeof betArg === 'number' && betArg>0) ? betArg : Number(document.getElementById('doubleBet').value) || 1;
+  if(bet>balance){ alert('Saldo insuficiente'); return; }
+  balance -= bet; updateBalanceDisplay();
+  const resultEl = document.getElementById('doubleResult');
+  const outcome = Math.random() > 0.5 ? 'red' : 'black';
+  if(choice === outcome){
+    const won = bet * 2;
+    balance += won; updateBalanceDisplay();
+    showResult(resultEl, `Saiu ${outcome.toUpperCase()} — Ganhou ${format(won)}`, 'win');
+    beep(900,0.1);
+  } else {
+    showResult(resultEl, `Saiu ${outcome.toUpperCase()} — Perdeu ${format(bet)}`, 'lose');
+    beep(220,0.08);
+  }
+}
+
+/* --------------------------
+   CRASH
+   -------------------------- */
+let crashInterval = null;
+let crashState = { running:false, mul:1, crashAt:0, bet:0 };
+
+function startCrash(){
+  if(crashState.running) return;
+  const bet = Number(document.getElementById('crashBet').value) || 1;
+  if(bet>balance){ alert('Saldo insuficiente'); return; }
+  balance -= bet; updateBalanceDisplay();
+  crashState.running = true; crashState.mul = 1; crashState.bet = bet;
+  crashState.crashAt = Number((1.1 + Math.pow(Math.random(),1.8)*12).toFixed(2));
+  document.getElementById('crashStart').disabled = true;
+  document.getElementById('crashCash').disabled = false;
+  showResult(document.getElementById('crashResult'), 'Rodando...', null);
+  const bar = document.getElementById('crashBar');
+  const mulEl = document.getElementById('crashMul');
+  bar.style.height = '0%';
+  let t=0;
+  crashInterval = setInterval(()=>{
+    t += 0.06;
+    crashState.mul = Number((1 + t*(0.45 + Math.sqrt(t)*0.03)).toFixed(2));
+    mulEl.textContent = crashState.mul.toFixed(2) + '×';
+    const h = Math.min(100, (crashState.mul/ (crashState.crashAt+2))*100 );
+    bar.style.height = h + '%';
+    beep(300 + Math.min(800, crashState.mul*50), 0.02);
+    if(crashState.mul >= crashState.crashAt){
+      clearInterval(crashInterval); crashInterval = null;
+      crashState.running = false;
+      document.getElementById('crashStart').disabled = false;
+      document.getElementById('crashCash').disabled = true;
+      showResult(document.getElementById('crashResult'), `Crash em ${crashState.crashAt.toFixed(2)}× — Perdeu ${format(crashState.bet)}`, 'lose');
+      beep(180,0.18);
+    }
+  },60);
+}
+
+function cashCrash(){
+  if(!crashState.running) return;
+  const mul = crashState.mul;
+  const won = crashState.bet * mul;
+  balance += won; updateBalanceDisplay();
+  clearInterval(crashInterval); crashInterval = null;
+  crashState.running = false;
+  document.getElementById('crashStart').disabled = false;
+  document.getElementById('crashCash').disabled = true;
+  showResult(document.getElementById('crashResult'), `Cashout: ${format(won)} (x${mul.toFixed(2)})`, 'win');
+  beep(950,0.12);
+}
+
+/* --------------------------
+   UI helpers
+   -------------------------- */
+function showResult(el, text, kind){
+  el.textContent = text;
+  el.classList.remove('win','lose');
+  if(kind==='win') el.classList.add('win');
+  if(kind==='lose') el.classList.add('lose');
+}
+
+/* init */
+(function init(){
+  updateBalanceDisplay();
+  const mg = document.getElementById('minesGrid');
+  mg.innerHTML = '';
+  for(let i=0;i<25;i++){
+    const cell = document.createElement('div');
+    cell.className = 'mine-cell';
+    cell.textContent = '';
+    cell.dataset.i = i;
+    mg.appendChild(cell);
+  }
+})();
+
+/* prevent Enter submits */
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter' && e.target && (e.target.tagName === 'INPUT')){
+    e.preventDefault();
+  }
+});
+</script>
+
 </body>
 </html>
 
